@@ -53,8 +53,7 @@ const HapticFeedbackDemo: FC = () => {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button
-            block
+          <div
             onClick={() => notificationOccurred(type)}
             className="transparent-button"
 
@@ -63,7 +62,7 @@ const HapticFeedbackDemo: FC = () => {
                 src={coinImage}
                 alt="Coin"
             />
-          </Button>
+          </div>
         </Form.Item>
         <Form.Item>
           <Button
