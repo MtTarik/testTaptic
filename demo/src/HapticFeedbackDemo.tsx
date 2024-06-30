@@ -34,9 +34,17 @@ const HapticFeedbackDemo: FC = () => {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button block type="primary" onClick={() => impactOccurred(style)}>
-            impactOccurred
+          <Button
+              block
+              onClick={selectionChanged}
+              className="transparent-button"
+          >
+            <img
+                src={coinImage}
+                alt="Coin"
+            />
           </Button>
+
         </Form.Item>
         <Form.Item label="type">
           <Select value={type} onChange={value => setType(value)}>

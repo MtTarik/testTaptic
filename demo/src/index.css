@@ -79,24 +79,21 @@ code {
 .transparent-button {
   background-color: transparent;
   border: none;
-  padding: 0; /* Remove default padding */
-  outline: none; /* Remove outline */
-  box-shadow: none; /* Remove any box-shadow */
+  padding: 0;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
 }
 
 .transparent-button img {
   width: 100px;
   height: 100px;
+  display: block;
 }
 
 /* Remove hover effects */
-.transparent-button:hover {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-/* Remove active effects */
+.transparent-button:hover,
+.transparent-button:focus,
 .transparent-button:active {
   background-color: transparent;
   border: none;
