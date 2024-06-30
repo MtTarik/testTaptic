@@ -41,24 +41,6 @@ const DemoApp: FC<{
       >
 
         <div className="contentWrapper">
-          {!activeBtn ? (
-            <MainButtonDemo
-              initialValues={{
-                show: isBetaVersion,
-                text: 'SECOND BUTTON',
-                progress: true,
-              }}
-              key="1"
-            />
-          ) : (
-            <MainButtonDemo
-              key="2"
-              initialValues={{
-                show: isBetaVersion,
-              }}
-            />
-          )}
-
           <HapticFeedbackDemo />
         </div>
       </ConfigProvider>

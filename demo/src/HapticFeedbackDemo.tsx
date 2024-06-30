@@ -17,7 +17,6 @@ const HapticFeedbackDemo: FC = () => {
 
   return (
     <>
-      <Typography.Title level={3}>useHapticFeedback</Typography.Title>
       <Form
         labelCol={{ span: 6 }}
         name="HapticFeedbackDemo"
