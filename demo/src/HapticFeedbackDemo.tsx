@@ -37,16 +37,13 @@ const HapticFeedbackDemo: FC = () => {
       setTotalScore((prevTotalScore) => prevTotalScore + touches.length);
       return newScore;
     });
+
     const coin = document.querySelector(`.${styles.coin}`);
     if (coin) {
       coin.classList.add('active');
-    }
-  };
-
-  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
-    const coin = document.querySelector(`.${styles.coin}`);
-    if (coin) {
-      coin.classList.remove('active');
+      setTimeout(() => {
+        coin.classList.remove('active');
+      }, 100); // швидке відновлення після натискання
     }
   };
 
@@ -54,7 +51,7 @@ const HapticFeedbackDemo: FC = () => {
     if (touchPoints.length > 0) {
       const timer = setTimeout(() => {
         setTouchPoints([]);
-      }, 500); // тривалість анімації
+      }, 1000); // тривалість анімації
       return () => clearTimeout(timer);
     }
   }, [touchPoints]);
@@ -64,15 +61,15 @@ const HapticFeedbackDemo: FC = () => {
           <div className={styles.buttonContainer}>
             <div className={styles.coinButton}>
               <div className={styles.coinContainer}
-                   onTouchStart={handleTouchStart}
-                   onTouchEnd={handleTouchEnd}
-                   onClick={() => impactOccurred("medium")}
+
               >
                 <img
+                    onClick={() => impactOccurred("medium")}
+
+                    onTouchStart={handleTouchStart}
                     src={coinImage}
                     className={styles.coin}
                     alt="Coin"
-                    style={{width: '100px', height: '100px'}}
 
                 />
                 {touchPoints.map((point) => (
