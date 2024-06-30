@@ -35,36 +35,6 @@ const HapticFeedbackDemo: FC = () => {
           </div>
 
         </Form.Item>
-        <Form.Item label="type">
-          <Select value={type} onChange={value => setType(value)}>
-            <Select.Option value="error">error</Select.Option>
-            <Select.Option value="success">success</Select.Option>
-            <Select.Option value="warning">warning</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item>
-          <div
-            onClick={() => notificationOccurred(type)}
-            className="transparent-button"
-
-          >
-            <img
-                src={coinImage}
-                alt="Coin"
-            />
-          </div>
-        </Form.Item>
-        <Form.Item>
-          <div
-              onClick={selectionChanged}
-              className="transparent-button"
-          >
-            <img
-                src={coinImage}
-                alt="Coin"
-            />
-          </div>
-        </Form.Item>
       </Form>
     </>
   );
