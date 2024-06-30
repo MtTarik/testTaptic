@@ -24,15 +24,23 @@ const HapticFeedbackDemo: FC = () => {
         autoComplete="off"
       >
         <Form.Item>
-          <div
-              onClick={() => impactOccurred("medium")}
-              className="transparent-button"
-          >
-            <img
-                src={coinImage}
-                alt="Coin"
-            />
+          <div className={'gameContainer'}>
+            <div className={'buttonContainer'}>
+
+
+              <div
+
+                  onClick={() => impactOccurred("medium")}
+                  className="coinContainer"
+              >
+                <img
+                    src={coinImage}
+                    alt="Coin"
+                />
+              </div>
+            </div>
           </div>
+
 
         </Form.Item>
       </Form>
