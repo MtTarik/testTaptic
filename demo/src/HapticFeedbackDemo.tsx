@@ -5,6 +5,7 @@ import {
   useHapticFeedback,
 } from '@vkruglikov/react-telegram-web-app';
 import coinImage from './assets/image/coin.png';
+import styles from './assets/MultiTouchClickerGame.module.css'
 interface TouchPoint {
   id: number;
   x: number;
@@ -40,6 +41,33 @@ const HapticFeedbackDemo: FC = () => {
   };
   return (
       <>
+        <div className={styles.gameContainer}>
+          <div className={styles.buttonContainer}>
+            <div className={styles.coinButton} onTouchStart={handleTouchStart}>
+              <div className={styles.coinContainer}>
+                <img
+                    src={coinImage}
+                    className={styles.coin}
+                    alt="Coin"
+                    style={{width: '100px', height: '100px'}}
+
+                />
+                {touchPoints.map((point) => (
+                    <div
+                        key={point.id}
+                        className={styles.touchPoint}
+                        style={{left: point.x - 50, top: point.y - 50}}
+                    >
+                      +1
+                    </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className={styles.totalScore}>
+            Total Score: {totalScore}
+          </div>
+        </div>
         <div className={"gameContainer"}>
           <div className={"buttonContainer"}>
             <div className={"coinButton"}
@@ -47,12 +75,15 @@ const HapticFeedbackDemo: FC = () => {
 
 
             >
-              <div className={"coinContainer"}>
+              <div
+
+                  onTouchStart={handleTouchStart}
+                  className={"coinContainer"}>
                 <img
                     src={coinImage}
                     className={"coin"}
                     alt="Coin"
-                    style={{ width: '100px', height: '100px' }}
+                    style={{width: '100%', height: '100%'}}
 
                 />
 
