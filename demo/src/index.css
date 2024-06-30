@@ -54,7 +54,8 @@ code {
 }
 
 .contentWrapper {
-  background: var(--tg-theme-bg-color);
+  background: url('./assets/image/background.gif') no-repeat center center;
+  background-size: cover;
   color: var(--tg-theme-text-color) !important;
   border-radius: 10px;
   margin: 5px 0;
@@ -83,19 +84,13 @@ code {
   outline: none;
   box-shadow: none;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .transparent-button img {
-  width: 100px;
-  height: 100px;
+  width: 150px; /* Adjust the size as needed */
+  height: 150px; /* Adjust the size as needed */
   display: block;
-}
-
-/* Remove hover effects */
-.transparent-button:hover,
-.transparent-button:focus,
-.transparent-button:active {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
 }

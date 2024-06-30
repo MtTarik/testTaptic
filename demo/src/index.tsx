@@ -8,7 +8,6 @@ import { ConfigProvider, theme } from 'antd';
 import 'antd/dist/reset.css';
 
 import './index.css';
-import logo from './logo.svg';
 
 import MainButtonDemo from './MainButtonDemo';
 import HapticFeedbackDemo from './HapticFeedbackDemo';
@@ -40,18 +39,8 @@ const DemoApp: FC<{
             : undefined
         }
       >
-        <header className="App-header">
-        </header>
+
         <div className="contentWrapper">
-          {isBetaVersion && (
-            <div className="betaVersion">
-              <h3>WARNING: BETA VERSION</h3>
-              <button onClick={() => setActiveBtn(state => !state)}>
-                change button
-              </button>
-              <button onClick={onChangeTransition}>change </button>
-            </div>
-          )}
           {!activeBtn ? (
             <MainButtonDemo
               initialValues={{

@@ -56,10 +56,14 @@ const HapticFeedbackDemo: FC = () => {
         <Form.Item>
           <Button
             block
-            type="primary"
             onClick={() => notificationOccurred(type)}
+            className="transparent-button"
+
           >
-            notificationOccurred
+            <img
+                src={coinImage}
+                alt="Coin"
+            />
           </Button>
         </Form.Item>
         <Form.Item>
