@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import {FC, useEffect, useState} from 'react';
 import {
   ImpactOccurredFunction,
   NotificationOccurredFunction,
@@ -37,14 +37,37 @@ const HapticFeedbackDemo: FC = () => {
       setTotalScore((prevTotalScore) => prevTotalScore + touches.length);
       return newScore;
     });
-
+    const coin = document.querySelector(`.${styles.coin}`);
+    if (coin) {
+      coin.classList.add('active');
+    }
   };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    const coin = document.querySelector(`.${styles.coin}`);
+    if (coin) {
+      coin.classList.remove('active');
+    }
+  };
+
+  useEffect(() => {
+    if (touchPoints.length > 0) {
+      const timer = setTimeout(() => {
+        setTouchPoints([]);
+      }, 500); // тривалість анімації
+      return () => clearTimeout(timer);
+    }
+  }, [touchPoints]);
   return (
       <>
         <div className={styles.gameContainer}>
           <div className={styles.buttonContainer}>
-            <div className={styles.coinButton} onTouchStart={handleTouchStart}>
-              <div className={styles.coinContainer}>
+            <div className={styles.coinButton}>
+              <div className={styles.coinContainer}
+                   onTouchStart={handleTouchStart}
+                   onTouchEnd={handleTouchEnd}
+                   onClick={() => impactOccurred("medium")}
+              >
                 <img
                     src={coinImage}
                     className={styles.coin}
@@ -83,7 +106,7 @@ const HapticFeedbackDemo: FC = () => {
                     src={coinImage}
                     className={"coin"}
                     alt="Coin"
-                    style={{width: '100%', height: '100%'}}
+                    style={{width: '100px', height: '100px'}}
 
                 />
 
