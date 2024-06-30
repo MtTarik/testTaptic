@@ -72,22 +72,6 @@ const HapticFeedbackDemo: FC = () => {
             Total Score: {totalScore}
           </div>
         </div>
-        <div className={"gameContainer"}>
-          <div className={"buttonContainer"}>
-
-            <div
-
-                onClick={() => impactOccurred("medium")}
-                className="coinContainer"
-            >
-              <img
-                  src={coinImage}
-                  className={"coin"}
-                  alt="Coin"
-              />
-            </div>
-          </div>
-        </div>
       </>
   );
 };

@@ -21,29 +21,11 @@ const DemoApp: FC<{
   const [activeBtn, setActiveBtn] = useState(true);
 
   return (
-    <div>
-      <ConfigProvider
-        theme={
-          themeParams.text_color
-            ? {
-                algorithm:
-                  colorScheme === 'dark'
-                    ? theme.darkAlgorithm
-                    : theme.defaultAlgorithm,
-                token: {
-                  colorText: themeParams.text_color,
-                  colorPrimary: themeParams.button_color,
-                  colorBgBase: themeParams.bg_color,
-                },
-              }
-            : undefined
-        }
-      >
+    <div className="contentWrapper">
 
-        <div className="contentWrapper">
           <HapticFeedbackDemo />
-        </div>
-      </ConfigProvider>
+
+
     </div>
   );
 };
