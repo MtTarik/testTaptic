@@ -35,6 +35,7 @@ const HapticFeedbackDemo: FC = () => {
               >
                 <img
                     src={coinImage}
+                    className={"coin"}
                     alt="Coin"
                 />
               </div>

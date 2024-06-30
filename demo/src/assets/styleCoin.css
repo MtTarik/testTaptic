@@ -1,4 +1,4 @@
-gameContainer {
+.gameContainer {
     position: relative;
     display: flex;
     justify-content: center;
