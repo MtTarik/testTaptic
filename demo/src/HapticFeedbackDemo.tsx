@@ -23,18 +23,9 @@ const HapticFeedbackDemo: FC = () => {
         layout="horizontal"
         autoComplete="off"
       >
-        <Form.Item label="style">
-          <Select value={style} onChange={value => setStyle(value)}>
-            <Select.Option value="light">light</Select.Option>
-            <Select.Option value="medium">medium</Select.Option>
-            <Select.Option value="heavy">heavy</Select.Option>
-            <Select.Option value="rigid">rigid</Select.Option>
-            <Select.Option value="soft">soft</Select.Option>
-          </Select>
-        </Form.Item>
         <Form.Item>
           <div
-              onClick={() => impactOccurred(style)}
+              onClick={() => impactOccurred("soft")}
               className="transparent-button"
           >
             <img
