@@ -11,7 +11,7 @@ const HapticFeedbackDemo: FC = () => {
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback();
   const [style, setStyle] =
-    useState<Parameters<ImpactOccurredFunction>[0]>('light');
+    useState<Parameters<ImpactOccurredFunction>[0]>('heavy');
   const [type, setType] =
     useState<Parameters<NotificationOccurredFunction>[0]>('error');
 
