@@ -25,7 +25,7 @@ const HapticFeedbackDemo: FC = () => {
       >
         <Form.Item>
           <div
-              onClick={() => impactOccurred("soft")}
+              onClick={() => impactOccurred("medium")}
               className="transparent-button"
           >
             <img
