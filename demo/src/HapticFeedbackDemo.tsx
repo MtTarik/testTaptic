@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import { useHapticFeedback } from '@vkruglikov/react-telegram-web-app';
 import coinImage from './assets/image/coin.png';
 import styles from './assets/MultiTouchClickerGame.module.css';
-
 
 interface TouchPoint {
   id: number;
@@ -25,6 +24,7 @@ const HapticFeedbackDemo: React.FC = () => {
   const [scorePerTap, setScorePerTap] = useState<number>(INITIAL_SCORE_PER_TAP);
 
   const [impactOccurred] = useHapticFeedback();
+  const animationFrameId = useRef<number | null>(null);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -89,7 +89,14 @@ const HapticFeedbackDemo: React.FC = () => {
     return () => clearInterval(timer);
   }, [availableTaps]);
 
-  const renderTouchPoints = () => {
+  const renderTouchPoints = useCallback(() => {
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+    }
+    animationFrameId.current = requestAnimationFrame(() => {
+      setTouchPoints((prevTouchPoints) => prevTouchPoints.slice(0, 10));
+    });
+
     return touchPoints.map((point) => (
         <div
             key={point.id}
@@ -99,7 +106,7 @@ const HapticFeedbackDemo: React.FC = () => {
           +{scorePerTap}
         </div>
     ));
-  };
+  }, [touchPoints, scorePerTap]);
 
   const upgradeScorePerTap = () => {
     const upgradeCost = INITIAL_UPGRADE_COST + Math.floor(totalScore / UPGRADE_COST_INCREMENT) * UPGRADE_COST_INCREMENT;
@@ -126,8 +133,6 @@ const HapticFeedbackDemo: React.FC = () => {
 
   return (
       <div className={styles.gameContainer}>
-
-
         <div className={styles.coinButton}>
           <div className={styles.coinContainer}>
             <img
@@ -140,7 +145,6 @@ const HapticFeedbackDemo: React.FC = () => {
             {renderTouchPoints()}
           </div>
         </div>
-
         <div className={styles.totalScore}>
           Total Score: {totalScore}
         </div>
@@ -148,8 +152,7 @@ const HapticFeedbackDemo: React.FC = () => {
           {availableTaps}/{MAX_TAPS}
         </div>
         <div className={styles.progressContainer}>
-          <div className={styles.progressBar} style={{width: `${(availableTaps / MAX_TAPS) * 100}%`}}/>
-
+          <div className={styles.progressBar} style={{ width: `${(availableTaps / MAX_TAPS) * 100}%` }} />
         </div>
         <div className={styles.upgradesContainer}>
           <button
