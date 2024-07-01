@@ -1,36 +1,31 @@
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHapticFeedback } from '@vkruglikov/react-telegram-web-app';
 import coinImage from './assets/image/coin.png';
 import styles from './assets/MultiTouchClickerGame.module.css';
 
-interface TouchPoint {
-  id: number;
-  x: number;
-  y: number;
-}
-
-const MAX_TAPS = 2000;
 const REGENERATION_INTERVAL = 1 * 60 * 60 * 1000;
-
-const INITIAL_UPGRADE_COST = 1500;
-const UPGRADE_COST_INCREMENT = 1500;
-const INITIAL_SCORE_PER_TAP = 1;
+const INITIAL_UPGRADE_COST = 2000; // Начальная стоимость апгрейда
+const UPGRADE_COST_INCREMENT = 1000; // Увеличение стоимости апгрейда
+const INITIAL_SCORE_PER_TAP = 110000;
+const MAX_LEVEL = 20; // Максимальный уровень апгрейда
 
 const HapticFeedbackDemo: React.FC = () => {
   const [currentScore, setCurrentScore] = useState<number>(0);
-  const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
+  const [touchPoints, setTouchPoints] = useState<{ id: number; x: number; y: number; }[]>([]);
   const [totalScore, setTotalScore] = useState<number>(0);
-  const [availableTaps, setAvailableTaps] = useState<number>(MAX_TAPS);
+  const [availableTaps, setAvailableTaps] = useState<number>(2000); // Начальное количество тапов
   const [scorePerTap, setScorePerTap] = useState<number>(INITIAL_SCORE_PER_TAP);
-
   const [impactOccurred] = useHapticFeedback();
-  const animationFrameId = useRef<number | null>(null);
+  const [upgradeLevel, setUpgradeLevel] = useState<number>(0); // Уровень апгрейда
+
+  // Максимальное количество тапов на текущем уровне
+  const MAX_TAPS = 2000 + upgradeLevel * 1000;
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
     const touches = event.touches;
     const coinRect = event.currentTarget.getBoundingClientRect();
-    const newTouchPoints: TouchPoint[] = Array.from(touches).map((touch, index) => ({
+    const newTouchPoints = Array.from(touches).map((touch, index) => ({
       id: Date.now() + index,
       x: touch.clientX - coinRect.left,
       y: touch.clientY - coinRect.top,
@@ -39,9 +34,8 @@ const HapticFeedbackDemo: React.FC = () => {
     setCurrentScore((prevScore) => prevScore + touches.length * scorePerTap);
     setTotalScore((prevTotalScore) => prevTotalScore + touches.length * scorePerTap);
 
-    if (availableTaps > 0) {
-      setAvailableTaps((prevAvailableTaps) => Math.max(prevAvailableTaps - touches.length, 0));
-    }
+    // Уменьшаем доступные тапы при каждом нажатии на монету
+    setAvailableTaps((prevAvailableTaps) => Math.max(prevAvailableTaps - touches.length, 0));
 
     const coin = document.querySelector(`.${styles.coin}`) as HTMLElement;
     if (coin) {
@@ -55,15 +49,15 @@ const HapticFeedbackDemo: React.FC = () => {
         let tiltAngleY = 0;
 
         if (touch.clientY < centerY) {
-          tiltAngleX = -(centerY - touch.clientY) / 6;
+          tiltAngleX = -(centerY - touch.clientY) / 10;
         } else if (touch.clientY > centerY) {
-          tiltAngleX = (touch.clientY - centerY) / 6;
+          tiltAngleX = (touch.clientY - centerY) / 10;
         }
 
         if (touch.clientX < centerX) {
-          tiltAngleY = -(centerX - touch.clientX) / 6;
+          tiltAngleY = -(centerX - touch.clientX) / 10;
         } else if (touch.clientX > centerX) {
-          tiltAngleY = (touch.clientX - centerX) / 6;
+          tiltAngleY = (touch.clientX - centerX) / 10;
         }
 
         coin.style.transition = 'none';
@@ -87,56 +81,46 @@ const HapticFeedbackDemo: React.FC = () => {
     }, REGENERATION_INTERVAL);
 
     return () => clearInterval(timer);
-  }, [availableTaps]);
+  }, [availableTaps, MAX_TAPS]);
 
-  const renderTouchPoints = useCallback(() => {
-    if (animationFrameId.current) {
-      cancelAnimationFrame(animationFrameId.current);
-    }
-    animationFrameId.current = requestAnimationFrame(() => {
-      setTouchPoints((prevTouchPoints) => prevTouchPoints.slice(0, 10));
-    });
-
+  const renderTouchPoints = () => {
     return touchPoints.map((point) => (
-        <div
-            key={point.id}
-            className={styles.touchPoint}
-            style={{ left: point.x - 50, top: point.y - 50 }}
-        >
+        <div key={point.id} className={styles.touchPoint} style={{ left: point.x - 50, top: point.y - 50 }}>
           +{scorePerTap}
         </div>
     ));
-  }, [touchPoints, scorePerTap]);
+  };
 
   const upgradeScorePerTap = () => {
-    const upgradeCost = INITIAL_UPGRADE_COST + Math.floor(totalScore / UPGRADE_COST_INCREMENT) * UPGRADE_COST_INCREMENT;
-    if (totalScore >= upgradeCost) {
+    const currentUpgradeCost = INITIAL_UPGRADE_COST + upgradeLevel * UPGRADE_COST_INCREMENT;
+    if (totalScore >= currentUpgradeCost && upgradeLevel < MAX_LEVEL) {
       setScorePerTap((prevScorePerTap) => prevScorePerTap + 1);
-      setTotalScore((prevTotalScore) => prevTotalScore - upgradeCost);
+      setTotalScore((prevTotalScore) => prevTotalScore - currentUpgradeCost);
+      setUpgradeLevel((prevLevel) => prevLevel + 1);
     } else {
-      alert(`Not enough ${upgradeCost} points for upgrade!`);
+      alert(`Not enough points or maximum level reached!`);
     }
   };
 
   const upgradeTapsLimit = () => {
-    const upgradeCost = 1500 + Math.floor(totalScore / UPGRADE_COST_INCREMENT) * UPGRADE_COST_INCREMENT;
-    if (totalScore >= upgradeCost) {
-      setAvailableTaps((prevAvailableTaps) => prevAvailableTaps + 1000);
-      setTotalScore((prevTotalScore) => prevTotalScore - upgradeCost);
+    const currentUpgradeCost = INITIAL_UPGRADE_COST + upgradeLevel * UPGRADE_COST_INCREMENT;
+    if (totalScore >= currentUpgradeCost && upgradeLevel < MAX_LEVEL) {
+      setTotalScore((prevTotalScore) => prevTotalScore - currentUpgradeCost);
+      setUpgradeLevel((prevLevel) => prevLevel + 1);
     } else {
-      alert(`Not enough ${upgradeCost} points for upgrade!`);
+      alert(`Not enough points or maximum level reached!`);
     }
   };
 
-  const upgradeProgress1 = (totalScore / (INITIAL_UPGRADE_COST + Math.floor(totalScore / UPGRADE_COST_INCREMENT) * UPGRADE_COST_INCREMENT)) * 100;
-  const upgradeProgress2 = (totalScore / (1500 + Math.floor(totalScore / UPGRADE_COST_INCREMENT) * UPGRADE_COST_INCREMENT)) * 100;
+  const upgradeProgress1 = (totalScore / (INITIAL_UPGRADE_COST + upgradeLevel * UPGRADE_COST_INCREMENT)) * 100;
+  const upgradeProgress2 = (totalScore / (INITIAL_UPGRADE_COST + upgradeLevel * UPGRADE_COST_INCREMENT)) * 100;
 
   return (
       <div className={styles.gameContainer}>
         <div className={styles.coinButton}>
           <div className={styles.coinContainer}>
             <img
-                onClick={() => impactOccurred("medium")}
+                onClick={() => impactOccurred("rigid")}
                 onTouchStart={handleTouchStart}
                 src={coinImage}
                 className={styles.coin}
@@ -145,14 +129,18 @@ const HapticFeedbackDemo: React.FC = () => {
             {renderTouchPoints()}
           </div>
         </div>
+
+        <div className={styles.progressContainer}>
+          <div className={styles.progressBarContainer}>
+            <div className={styles.progressBar} />
+            <div className={styles.progressBarFill} style={{ width: `${(availableTaps / MAX_TAPS) * 100}%` }} />
+          </div>
+          <div className={styles.progressBarText}>
+            {availableTaps}/{MAX_TAPS}
+          </div>
+        </div>
         <div className={styles.totalScore}>
           Total Score: {totalScore}
-        </div>
-        <div className={styles.progressBarText}>
-          {availableTaps}/{MAX_TAPS}
-        </div>
-        <div className={styles.progressContainer}>
-          <div className={styles.progressBar} style={{ width: `${(availableTaps / MAX_TAPS) * 100}%` }} />
         </div>
         <div className={styles.upgradesContainer}>
           <button
@@ -160,7 +148,7 @@ const HapticFeedbackDemo: React.FC = () => {
               className={styles.upgradeButton}
               style={{
                 backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0) ${upgradeProgress1}%, #bf05ff ${upgradeProgress1}%)`,
-                pointerEvents: totalScore >= INITIAL_UPGRADE_COST ? 'auto' : 'none',
+                pointerEvents: totalScore >= (INITIAL_UPGRADE_COST + upgradeLevel * UPGRADE_COST_INCREMENT) && upgradeLevel < MAX_LEVEL ? 'auto' : 'none',
               }}
           >
             Upgrade (+1)
@@ -170,7 +158,7 @@ const HapticFeedbackDemo: React.FC = () => {
               className={styles.upgradeButton}
               style={{
                 backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0) ${upgradeProgress2}%, #bf05ff ${upgradeProgress2}%)`,
-                pointerEvents: totalScore >= 1500 ? 'auto' : 'none',
+                pointerEvents: totalScore >= (INITIAL_UPGRADE_COST + upgradeLevel * UPGRADE_COST_INCREMENT) && upgradeLevel < MAX_LEVEL ? 'auto' : 'none',
               }}
           >
             Upgrade Taps (+1000)
