@@ -1,3 +1,4 @@
+/* assets/MultiTouchClickerGame.module.css */
 .gameContainer {
     position: relative;
     display: flex;
@@ -15,7 +16,7 @@
     user-select: none;
     outline: none;
     margin: 22px;
-    transition: transform 0.1s; /* Зменшений час для більш швидкого переходу */
+    transition: transform 0.1s;
 }
 
 .coinContainer {
@@ -27,28 +28,20 @@
 }
 
 .coin {
-    padding: 0;
     display: block;
-    width: 100%;
-    height: 100%;
-    animation: float 4s ease-in-out infinite;
-    text-shadow: 0 1px aliceblue, 5px 5px 5px rgba(140, 148, 160, 0.479);
-    transition: transform 0.1s, filter 0.1s; /* Зменшений час для більш швидкого переходу */
+    width: 200px;
+    height: 200px;
+    transition: transform 0.3s ease-in-out;
+    transform-style: preserve-3d;
+    transform-origin: center;
+    cursor: pointer;
 }
 
 .coin.active {
-    transform: scale(0.8);
-    animation: none;
+    transform: scale(0.9) rotateX(0deg) rotateY(0deg);
 }
 
 .coinButton {
-    background: none;
-    border: none;
-    padding: 0;
-    position: relative;
-    width: 200px;
-    height: 130px;
-    overflow: visible;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -57,21 +50,21 @@
     font-size: 30px;
     color: #ffffff;
     font-weight: bold;
-    animation: flyUp 1s ease-out forwards, fadeOut 1s ease-out forwards; /* Зменшений час анімації */
+    animation: flyUp 1s ease-out forwards, fadeOut 1s ease-out forwards;
 }
 
 @keyframes flyUp {
     0% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(-10px) scale(1);
     }
     50% {
         opacity: 1;
-        transform: translateY(-50px) scale(1.2);
+        transform: translateY(-80px) scale(1.5);
     }
     100% {
         opacity: 0;
-        transform: translateY(-100px) scale(1);
+        transform: translateY(-100px) scale(2);
     }
 }
 
@@ -81,38 +74,6 @@
     }
     100% {
         opacity: 0;
-    }
-}
-
-.buttonContainer:hover {
-    transform: scale(1.50);
-}
-
-.buttonContainer:active {
-    transform: scale(1.25);
-    filter: drop-shadow(0 0 20px #424242) hue-rotate(12deg) contrast(110%);
-}
-
-.ominousHover {
-    animation: float 4s ease-in-out infinite;
-    text-shadow: 0px 1px aliceblue, 5px 5px 5px rgba(140, 148, 160, 0.479);
-}
-
-@keyframes float {
-    0% {
-        transform: translate(0, 0) rotateZ(-1deg);
-    }
-    25% {
-        transform: translate(0, 15px) rotateZ(0);
-    }
-    50% {
-        transform: translate(0, 0) rotateZ(1deg);
-    }
-    75% {
-        transform: translate(0, 15px) rotateZ(0);
-    }
-    100% {
-        transform: translate(0, 0) rotateZ(-1deg);
     }
 }
 
