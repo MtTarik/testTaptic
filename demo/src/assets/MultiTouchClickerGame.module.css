@@ -1,3 +1,4 @@
+/* assets/MultiTouchClickerGame.module.css */
 .gameContainer {
     position: relative;
     display: flex;
@@ -5,46 +6,6 @@
     align-items: center;
     flex-direction: column;
     height: 100vh;
-}
-
-.scoreContainer {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 10px;
-}
-
-.progressBarContainer {
-    width: 80%;
-    height: 20px;
-    background-color: #444;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    animation: shake 3s infinite;
-}
-
-.progressBar {
-    height: 100%;
-    background-color: rgba(228, 22, 236, 0.84);
-    transition: width 0.3s ease;
-    box-shadow: 0 0 10px rgba(228, 22, 236, 0.84);
-}
-
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-1%);
-    }
-    50% {
-        transform: translateX(1%);
-    }
-    75% {
-        transform: translateX(-1%);
-    }
 }
 
 .buttonContainer {
@@ -89,9 +50,6 @@
     font-size: 30px;
     color: #ffffff;
     font-weight: bold;
-}
-
-.touchPointAnimated {
     animation: flyUp 1s ease-out forwards, fadeOut 1s ease-out forwards;
 }
 
@@ -125,4 +83,3 @@
     font-size: 22px;
     color: white;
 }
-
