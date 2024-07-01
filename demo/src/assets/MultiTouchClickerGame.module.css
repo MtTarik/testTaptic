@@ -7,16 +7,7 @@
     height: 100vh;
 }
 
-.buttonContainer {
-    position: relative;
-    transform: scale(1.5);
-    background: none;
-    border: none;
-    user-select: none;
-    outline: none;
-    margin: 22px;
-    transition: transform 0.1s;
-}
+
 
 .coinContainer {
     position: relative;
@@ -24,9 +15,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .coin {
+
     display: block;
     width: 200px;
     height: 200px;
@@ -41,6 +34,7 @@
 }
 
 .coinButton {
+    margin: 22px;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -78,29 +72,34 @@
 
 
 .progressContainer {
+    margin: 0 auto;
     width: 300px;
-    height: 20px;
+    height: 9px;
     background-color: #2c0083;
     border-radius: 10px;
-    margin-bottom: 10px;
 }
 
 .progressBar {
     height: 100%;
     border-radius: 10px;
-    background-color: #bf05ff;
+    background-color: rgba(255, 0, 255, 0.85);
 }
 
 .progressBarText {
     text-align: center;
     font-size: 14px;
+    margin: 7px;
+
 }
 
 .upgradesContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;
+    position: absolute;
+    bottom: 25px; /* Відступ вище низу сторінки */
+    width: 100%;
+    padding: 20px 0; /* Додайте відступи для власного вигляду */
 }
 
 .upgradeButton {
@@ -130,7 +129,6 @@
 }
 
 .progressContainer {
-    margin-top: 20px;
     width: 80%;
 }
 
@@ -143,7 +141,6 @@
 }
 
 .totalScore {
-    margin-top: 150px;
     font-weight: bold;
     font-size: 22px;
     color: white;

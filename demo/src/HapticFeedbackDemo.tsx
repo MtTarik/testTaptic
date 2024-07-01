@@ -55,15 +55,15 @@ const HapticFeedbackDemo: React.FC = () => {
         let tiltAngleY = 0;
 
         if (touch.clientY < centerY) {
-          tiltAngleX = -(centerY - touch.clientY) / 10;
+          tiltAngleX = -(centerY - touch.clientY) / 6;
         } else if (touch.clientY > centerY) {
-          tiltAngleX = (touch.clientY - centerY) / 10;
+          tiltAngleX = (touch.clientY - centerY) / 6;
         }
 
         if (touch.clientX < centerX) {
-          tiltAngleY = -(centerX - touch.clientX) / 10;
+          tiltAngleY = -(centerX - touch.clientX) / 6;
         } else if (touch.clientX > centerX) {
-          tiltAngleY = (touch.clientX - centerX) / 10;
+          tiltAngleY = (touch.clientX - centerX) / 6;
         }
 
         coin.style.transition = 'none';
@@ -126,6 +126,8 @@ const HapticFeedbackDemo: React.FC = () => {
 
   return (
       <div className={styles.gameContainer}>
+
+
         <div className={styles.coinButton}>
           <div className={styles.coinContainer}>
             <img
@@ -139,14 +141,15 @@ const HapticFeedbackDemo: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.progressContainer}>
-          <div className={styles.progressBar} style={{width: `${(availableTaps / MAX_TAPS) * 100}%`}}/>
-          <div className={styles.progressBarText}>
-            {availableTaps}/{MAX_TAPS}
-          </div>
-        </div>
         <div className={styles.totalScore}>
           Total Score: {totalScore}
+        </div>
+        <div className={styles.progressBarText}>
+          {availableTaps}/{MAX_TAPS}
+        </div>
+        <div className={styles.progressContainer}>
+          <div className={styles.progressBar} style={{width: `${(availableTaps / MAX_TAPS) * 100}%`}}/>
+
         </div>
         <div className={styles.upgradesContainer}>
           <button
