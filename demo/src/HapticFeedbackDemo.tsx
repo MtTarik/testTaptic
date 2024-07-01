@@ -163,7 +163,7 @@ const HapticFeedbackDemo: React.FC = () => {
         <div className={styles.coinButton}>
           <div className={styles.coinContainer}>
             <img
-                onClick={() => impactOccurred('medium')}
+                onClick={() => impactOccurred('rigid')}
                 onTouchStart={handleTouchStart}
                 src={coinImage}
                 className={styles.coin}
