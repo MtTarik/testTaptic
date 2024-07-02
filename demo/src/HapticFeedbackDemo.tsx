@@ -20,9 +20,9 @@ const HapticFeedbackDemo: React.FC = () => {
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
   const [totalScore, setTotalScore] = useState<number>(0);
-  const [availableTaps, setAvailableTaps] = useState<number>(2000); // Initial available taps
+  const [availableTaps, setAvailableTaps] = useState<number>(3000); // Initial available taps
   const [scorePerTap, setScorePerTap] = useState<number>(INITIAL_SCORE_PER_TAP);
-  const [maxTaps, setMaxTaps] = useState<number>(2000); // Initial max taps
+  const [maxTaps, setMaxTaps] = useState<number>(3000); // Initial max taps
   const [upgradeCompleted, setUpgradeCompleted] = useState<boolean>(false);
   const [showExplosion, setShowExplosion] = useState<boolean>(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
@@ -189,13 +189,10 @@ const HapticFeedbackDemo: React.FC = () => {
     }
   };
 
-
   const upgradeScorePerTapCost = () => {
     const level = Math.floor((scorePerTap - INITIAL_SCORE_PER_TAP) / UPGRADE_COST_INCREMENT) + 1;
     return INITIAL_UPGRADE_COST + level * UPGRADE_COST_INCREMENT;
   };
-
-
 
   const upgradeTapsLimitCost = () => {
     const currentLevel = Math.floor((maxTaps / 1000 - 2) / UPGRADE_COST_INCREMENT) + 1;
@@ -226,7 +223,10 @@ const HapticFeedbackDemo: React.FC = () => {
         <div className={styles.progressContainer}>
           <div className={styles.progressBar} style={{ width: `${(availableTaps / maxTaps) * 100}%` }} />
         </div>
-        <div className={styles.upgradesContainer}>
+        <div
+            onClick={() => impactOccurred('rigid')}
+
+            className={styles.upgradesContainer}>
           <button
               onClick={upgradeScorePerTap}
               className={styles.upgradeButton}
@@ -243,8 +243,8 @@ const HapticFeedbackDemo: React.FC = () => {
             {showExplosion && <div className={styles.explosion} onAnimationEnd={() => setShowExplosion(false)}/>}
           </button>
 
-
           <button
+
               onClick={upgradeTapsLimit}
               className={styles.upgradeButton}
               style={{
@@ -262,4 +262,3 @@ const HapticFeedbackDemo: React.FC = () => {
 };
 
 export default HapticFeedbackDemo;
-
