@@ -20,9 +20,9 @@ const HapticFeedbackDemo: React.FC = () => {
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
   const [totalScore, setTotalScore] = useState<number>(0);
-  const [availableTaps, setAvailableTaps] = useState<number>(3000); // Initial available taps
+  const [availableTaps, setAvailableTaps] = useState<number>(60000); // Initial available taps
   const [scorePerTap, setScorePerTap] = useState<number>(INITIAL_SCORE_PER_TAP);
-  const [maxTaps, setMaxTaps] = useState<number>(3000); // Initial max taps
+  const [maxTaps, setMaxTaps] = useState<number>(600000); // Initial max taps
   const [upgradeCompleted, setUpgradeCompleted] = useState<boolean>(false);
   const [showExplosion, setShowExplosion] = useState<boolean>(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
