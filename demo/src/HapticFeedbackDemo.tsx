@@ -9,7 +9,7 @@ interface TouchPoint {
   y: number;
 }
 
-const REGENERATION_INTERVAL = 1.2 * 1000;
+const REGENERATION_INTERVAL = 2 * 100;
 const REGENERATION_DELAY = 5 * 1000;
 
 const INITIAL_UPGRADE_COST = 1500;
