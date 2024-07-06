@@ -12,22 +12,32 @@ interface TouchPoint {
 const REGENERATION_INTERVAL = 2 * 100;
 const REGENERATION_DELAY = 5 * 1000;
 
-const INITIAL_UPGRADE_COST = 1500;
-const UPGRADE_COST_INCREMENT = 1500;
-const INITIAL_SCORE_PER_TAP = 100;
+const INITIAL_UPGRADE_COST = 1000;
+const INITIAL_SCORE_PER_TAP = 1;
 
 const HapticFeedbackDemo: React.FC = () => {
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [touchPoints, setTouchPoints] = useState<TouchPoint[]>([]);
   const [totalScore, setTotalScore] = useState<number>(0);
-  const [availableTaps, setAvailableTaps] = useState<number>(60000); // Initial available taps
+  const [availableTaps, setAvailableTaps] = useState<number>(2000);
   const [scorePerTap, setScorePerTap] = useState<number>(INITIAL_SCORE_PER_TAP);
-  const [maxTaps, setMaxTaps] = useState<number>(600000); // Initial max taps
+  const [maxTaps, setMaxTaps] = useState<number>(2000);
   const [upgradeCompleted, setUpgradeCompleted] = useState<boolean>(false);
   const [showExplosion, setShowExplosion] = useState<boolean>(false);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
 
   const [impactOccurred] = useHapticFeedback();
+
+  useEffect(() => {
+    const savedTotalScore = localStorage.getItem('totalScore');
+    if (savedTotalScore) {
+      setTotalScore(parseInt(savedTotalScore, 10));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('totalScore', totalScore.toString());
+  }, [totalScore]);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -112,23 +122,30 @@ const HapticFeedbackDemo: React.FC = () => {
   }, []);
 
   const renderTouchPoints = () => {
-    return touchPoints.map((point) => (
+    return touchPoints.map((point, index) => (
         <div
             key={point.id}
             className={styles.touchPoint}
-            style={{ left: point.x - 50, top: point.y - 50 }}
+            style={{
+              left: point.x - 50,
+              top: point.y - 50,
+            }}
         >
           +{scorePerTap}
         </div>
     ));
   };
 
+
+
+
+
   const renderParticles = () => {
     return particles.map((particle) => (
         <div
             key={particle.id}
             className={styles.particle}
-            style={{ left: particle.x, top: particle.y }}
+            style={{left: particle.x, top: particle.y}}
         />
     ));
   };
@@ -148,11 +165,11 @@ const HapticFeedbackDemo: React.FC = () => {
 
   const upgradeScorePerTap = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    const currentLevel = Math.floor((scorePerTap - INITIAL_SCORE_PER_TAP) / UPGRADE_COST_INCREMENT) + 1;
+    const currentLevel = Math.floor(Math.log2(scorePerTap / INITIAL_SCORE_PER_TAP)) + 1;
     const upgradeCost = INITIAL_UPGRADE_COST * Math.pow(2, currentLevel - 1);
 
     if (totalScore >= upgradeCost) {
-      setScorePerTap((prevScorePerTap) => prevScorePerTap + currentLevel); // Increment by current level
+      setScorePerTap((prevScorePerTap) => prevScorePerTap * 2); // Double score per tap
       setTotalScore((prevTotalScore) => prevTotalScore - upgradeCost);
       setUpgradeCompleted(true);
 
@@ -170,8 +187,8 @@ const HapticFeedbackDemo: React.FC = () => {
 
   const upgradeTapsLimit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    const currentLevel = Math.floor((maxTaps / 1000 - 2) / UPGRADE_COST_INCREMENT) + 1;
-    const upgradeCost = INITIAL_UPGRADE_COST * Math.pow(2, currentLevel - 1);
+    const currentLevel = Math.floor(maxTaps / 1000) - 1;
+    const upgradeCost = INITIAL_UPGRADE_COST * Math.pow(2, currentLevel);
 
     if (totalScore >= upgradeCost) {
       setTotalScore((prevTotalScore) => prevTotalScore - upgradeCost);
@@ -190,14 +207,25 @@ const HapticFeedbackDemo: React.FC = () => {
   };
 
   const upgradeScorePerTapCost = () => {
-    const level = Math.floor((scorePerTap - INITIAL_SCORE_PER_TAP) / UPGRADE_COST_INCREMENT) + 1;
-    return INITIAL_UPGRADE_COST + level * UPGRADE_COST_INCREMENT;
+    const level = Math.floor(Math.log2(scorePerTap / INITIAL_SCORE_PER_TAP)) + 1;
+    return INITIAL_UPGRADE_COST * Math.pow(2, level - 1);
   };
 
   const upgradeTapsLimitCost = () => {
-    const currentLevel = Math.floor((maxTaps / 1000 - 2) / UPGRADE_COST_INCREMENT) + 1;
-    return INITIAL_UPGRADE_COST * Math.pow(2, currentLevel - 1);
+    const currentLevel = Math.floor(maxTaps / 1000) - 1;
+    return INITIAL_UPGRADE_COST * Math.pow(2, currentLevel);
   };
+
+  const unlockNewUpgrades = () => {
+    if (scorePerTap >= INITIAL_SCORE_PER_TAP * Math.pow(2, 100)) {
+      // Unlock new upgrades or features here
+      alert('New upgrades unlocked!');
+    }
+  };
+
+  useEffect(() => {
+    unlockNewUpgrades();
+  }, [scorePerTap]);
 
   const upgradeScorePerTapProgress = Math.min((totalScore / upgradeScorePerTapCost()) * 100, 100);
   const upgradeTapsLimitProgress = Math.min((totalScore / upgradeTapsLimitCost()) * 100, 100);
@@ -223,10 +251,7 @@ const HapticFeedbackDemo: React.FC = () => {
         <div className={styles.progressContainer}>
           <div className={styles.progressBar} style={{ width: `${(availableTaps / maxTaps) * 100}%` }} />
         </div>
-        <div
-            onClick={() => impactOccurred('rigid')}
-
-            className={styles.upgradesContainer}>
+        <div onClick={() => impactOccurred('rigid')} className={styles.upgradesContainer}>
           <button
               onClick={upgradeScorePerTap}
               className={styles.upgradeButton}
@@ -244,7 +269,6 @@ const HapticFeedbackDemo: React.FC = () => {
           </button>
 
           <button
-
               onClick={upgradeTapsLimit}
               className={styles.upgradeButton}
               style={{
@@ -253,8 +277,11 @@ const HapticFeedbackDemo: React.FC = () => {
               }}
           >
             Upgrade Taps (+1000)
+            <br/>
+            Cost: {upgradeTapsLimitCost()} points
             {showExplosion && <div className={styles.explosion} onAnimationEnd={() => setShowExplosion(false)}/>}
           </button>
+
         </div>
         {renderParticles()}
       </div>
