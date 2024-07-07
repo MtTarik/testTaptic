@@ -13,7 +13,7 @@ const REGENERATION_INTERVAL = 2 * 100;
 const REGENERATION_DELAY = 5 * 1000;
 
 const INITIAL_UPGRADE_COST = 1000;
-const INITIAL_SCORE_PER_TAP = 1;
+const INITIAL_SCORE_PER_TAP = 100;
 
 const HapticFeedbackDemo: React.FC = () => {
   const [currentScore, setCurrentScore] = useState<number>(0);
@@ -244,7 +244,7 @@ const HapticFeedbackDemo: React.FC = () => {
             {renderTouchPoints()}
           </div>
         </div>
-        <div className={styles.totalScore}>Total Score: {totalScore}</div>
+        <div className={styles.totalScore}>count = {totalScore}</div>
         <div className={styles.progressBarText}>
           {availableTaps}/{maxTaps}
         </div>
@@ -260,9 +260,7 @@ const HapticFeedbackDemo: React.FC = () => {
                 pointerEvents: totalScore >= upgradeScorePerTapCost() ? 'auto' : 'none',
               }}
           >
-            Upgrade (+{scorePerTap - INITIAL_SCORE_PER_TAP + 1})
-            <br/>
-            {upgradeScorePerTapProgress.toFixed(0)}%
+            Up (+{scorePerTap - INITIAL_SCORE_PER_TAP + 1})
             <br/>
             {upgradeScorePerTapCost()} points
             {showExplosion && <div className={styles.explosion} onAnimationEnd={() => setShowExplosion(false)}/>}
@@ -276,7 +274,7 @@ const HapticFeedbackDemo: React.FC = () => {
                 pointerEvents: totalScore >= upgradeTapsLimitCost() ? 'auto' : 'none',
               }}
           >
-            Upgrade Taps (+1000)
+            (+1000)
             <br/>
             Cost: {upgradeTapsLimitCost()} points
             {showExplosion && <div className={styles.explosion} onAnimationEnd={() => setShowExplosion(false)}/>}

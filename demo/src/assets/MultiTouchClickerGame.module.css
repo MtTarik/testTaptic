@@ -19,8 +19,8 @@
 }
 .coin {
     display: block;
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     transition: transform 0.3s ease-in-out;
     transform-style: preserve-3d;
     transform-origin: center;
@@ -28,7 +28,7 @@
 }
 
 .coinButton {
-    margin: 22px;
+    margin-bottom: 22px;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -134,7 +134,7 @@
     padding: 10px 20px;
     margin: 0 10px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 15px;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
@@ -179,7 +179,23 @@
     }
 }
 .upgradeButton {
+    background-color: #2c0083;
+    color: #fff;
+    border: none;
+    padding: 15px 30px; /* Збільшити розмір для великих пікселів */
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 18px; /* Збільшити розмір шрифту */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px; /* Збільшити радіус кутів */
+    transition: background-color 0.3s ease;
     position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(to right, #bf05ff, #2c0083); /* Градієнт */
+
+    font-family: "Pixelify Sans", sans-serif;
+    font-optical-sizing: auto;
 }
 
 .upgradeButton::before {

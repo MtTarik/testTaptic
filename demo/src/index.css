@@ -9,15 +9,17 @@ html,
 body {
   cursor: url("./assets/image/cursor_.png"), pointer;
   overflow-x: hidden;
+
 }
 body {
-  font-family: Consolas, Roboto, sans-serif;
   background-image: url("./assets/image/background.gif");
   background-size: cover;
   background-repeat: no-repeat;
   background-color: black;
   color: aliceblue;
   overflow-x: hidden;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
 
 }
 html,
